@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红包抽奖</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .red-envelope {
+            width: 200px;
+            height: 300px;
+            background-color: #e60012;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: gold;
+            font-size: 24px;
+            transition: all 0.5s;
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .red-envelope.opened {
+            background-color: #fff;
+            color: #e60012;
+        }
+        .amount {
+            display: none;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .open-text {
+            text-align: center;
+        }
+        .spin {
+            animation: spin 0.5s ease-in-out;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="red-envelope" id="envelope">
+        <div class="open-text">点击拆红包</div>
+        <div class="amount" id="amount"></div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const openText = document.querySelector('.open-text');
+        const amountDisplay = document.getElementById('amount');
+        let isOpened = false;
+
+        function openEnvelope(event) {
+            if (!isOpened) {
+                event.preventDefault();
+                envelope.classList.add('spin');
+                setTimeout(() => {
+                    const amount = (Math.floor(Math.random() * 46) + 5).toFixed(2);
+                    envelope.classList.add('opened');
+                    envelope.classList.remove('spin');
+                    openText.style.display = 'none';
+                    amountDisplay.style.display = 'block';
+                    amountDisplay.textContent = `￥${amount}`;
+                    setTimeout(() => {
+                        alert(`恭喜你获得 ${amount} 元！已存入你的账户！`);
+                    }, 500);
+                    isOpened = true;
+                }, 500);
+            }
+        }
+
+        envelope.addEventListener('click', openEnvelope);
+        envelope.addEventListener('touchstart', openEnvelope);
+    </script>
+</body>
+</html>
